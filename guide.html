@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOHE welcome text creation masterclass</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+		 .background {
+    position: relative;
+    padding: 20px;
+    max-width: 100%;
+    height: auto;
+}
+
+.background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('wm_qfY.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(5px); /* Adjust the blur radius as needed */
+    z-index: -1; /* Ensure the pseudo-element is behind the content */
+}
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95); /* Adjust background color and opacity as needed */
+            border-radius: 10px; /* Rounded corners for the container */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+        }
+        h1 {
+            text-align: center;
+        }
+		.p2 {
+            font-size: 1.6em; /* Adjust the font size as needed */
+            font-weight: bold;
+            color: #333; /* Change the color if needed */
+			text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+        p {
+            line-height: 1.6;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+			font-family: "Georgia", serif;
+        }
+		 .button {
+			background: linear-gradient(120deg, #3498db, #8e44ad);
+			/* Adjust the angle (120deg) and colors (#3498db and #8e44ad) as needed */
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 8px;
+			border: none; /* Remove border if needed */
+		}
+		.blue-text {
+            color: #1650a1; /* Blue color code */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>TOHE welcome text creation masterclass</h1>
+</header>
+<div class="background">
+<div class="container">
+    <div class="p2">Welcome to the tohe template builder masterclass.</div>
+    
+		<h2>Getting started</h2>
+		<p><size=150%><b>How can I create a rules template & customize my welcome message?</b></size><br>
+		<i>Note: Being familiar with HTML helps a ton, but you don't need to be to understand this FAQ.</i><br><br>
+		<b>Locate your TOHE-DATA folder</b><br>
+		When inside your modded among us folder, go to -> TOHE-DATA -> <b>template.txt</b><br>
+		Here you should see something like this:</p>
+		<img src="text1.png" alt="Image 1">
+		
+		<p><br>Which Equates to this: </p>
+		<img src="text2.png" alt="Image 2">
+		
+		<p><br>And this:<br>
+				<i>Don't worry; We'll get back to how this works later. </i></p>
+		<img src="text3.png" alt="Image 3">
+		
+		<h2><br><br>Writing your first message</h2>
+		<p><b>Tags</b><br>
+		So as we saw, there came to be 2 messages from the 2 individuals lines. The way it does that is it uses Unique TAGS, these are a set of 3 special tags which ALWAYS apply for whenever an action happens (such as a meeting starting).<br>
+		Try to look at these messages and figure out what they are: 
+		<img src="text4.png" alt="Image 4">
+		
+		<p><br>Got it yet?<br>
+		Well if you haven't the first tag `<b>welcome:</b>` is called first, and everything thereafter will be sent out ALWAYS once a player enters the lobby or a match has finished.<br>
+		<i>Important note: It's Neccessary to write the message you want to attach to a tag all in the same line, or any text which is set to a new line using ENTER shall not be counted.</i><br><br> 
+
+		And the `<b>OnMeeting:</b>` tag is also called, which is sent out every time a meeting starts. Tags are not case sensitive; so even onmeeting: works.<br><br>
+
+		The last Unique Tag is `<b>OnFirstMeeting:</b>` and is called only on the first meeting of the match.</p>
+
+		<p><br><b>Duplicate Tags</b><br>
+		You can make multiple clones of the same tag, and everytime it is called (such as each time someone joins). ALL clones of it will be called of it in descending order, but each clone is a unique message.<br>
+		Here's an example: </p>
+		<img src="text5.png" alt="Image 5">
+		<img src="text6.png" alt="Image 6">
+		
+		<p><br><b>Create your own tag!</b><br>
+You will need to know that <u>\n</u> hops over to a new line.<br>
+With that in mind make a `<b>rules:</b>` basic tag, and try to recreate this: (Don't worry if you get something wrong, attempt your best)<br><br>
+
+<i>You call it by typing <u>/t</u> rules in the chat</i>
+<img src="text7.png" alt="Image 7">
+
+<p>DO NOT continue, before attempting.</p>
+	<button class="button" onclick="showAnswer()">Answer</button>
+		
+		<p>You notice I used a &lt;b&gt; &lt;/b&gt; formatter, this makes the text contained within <b>BOLD</b>, we'll get into this later.<br> 
+
+With that said, Congratulations! You're officialy a welcome msg creator! Now, this is only the fundamentals.. time to get into the real JUICY stuff.</p>
+    
+   
+   
+   <h2><br>Formatting Your Templates</h2>
+<p><b>Different Text Formatters</b><br>
+So as with <b>&lt;b&gt;</b><b>I AM BOLD</b><b>&lt;/b&gt;</b>, there exists a few more, and these are:<br> 
+<b>&lt;title&gt;</b>Woah I'm the title <b>&lt/title&gt;</b><br>
+<b>&lt;Size=??%&gt;</b> Oo I got a funky size<b>&lt;/Size&gt;</b><br> 
+<b>&lt;color=#?????&gt;</b><span class="blue-text">Wait, why I'm blue?</span><b>&lt;/color&gt;</b><br> 
+<b>&lt;i&gt;</b> <i>I'm skewed! </i><b>&lt;/i&gt;</b><br> 
+<b>&lt;mark&gt;</b><mark>WAit? I'm marked?</mark><b>&lt;/mark&gt;</b><br> 
+<b>&lt;u&gt;</b><u>woah, I have a floor!</u><b>&lt;/u&gt;</b><br> 
+<b>&lt;s&gt;</b><s>chinese censorship got done me..</s><b>&lt;/s&gt;</b><br> 
+<b>&lt;sup&gt;</b><sup>I'm heightened!</sup><b>&lt;/sup&gt;</b><br> 
+<b>&lt;sub&gt;</b><sub>I'm lowered ;( </sub><b>&lt;/sub&gt;</b><br></p>
+<p>There's a much more extensive list at <a href="https://docs.unity3d.com/Packages/com.unity.textmeshpro@3.2/manual/RichTextSupportedTags.html">unity-formatting</a> website.<br><br>
+
+
+<a href="https://docs.google.com/document/d/e/2PACX-1vQh4sc9RL_Byt3kextqngdaAuGovFO_YaxHITZsIKqcd39mUAc6sQ89sfsSRGZsHUCecfIQiDY2WtQ-/pub">Fonts, Sprites, Gradients etc...</a><br><br>
+
+Here's an example I made using some of these:<br>
+rules:&lt;b&gt;RULES:&lt;/b&gt;\n&lt;color=#f00010&gt;1. Do not reveal &lt;i&gt;ROLES&lt;/i&gt;.\n2. Do not kill &lt;b&gt;AFK&lt;/b&gt;.\n3. Be &lt;color=#f000e4&gt;kind&lt;/color&gt; to eachother ;D&lt;/color&gt;</p>
+
+<p><br><b>Variables</b><br>
+Variables allow you to fetch specific objects from the game, such as the {{PlayerName}},<br> you can learn more about them here: <a href="https://www.tohre.dev/Advanced.html">tohre.dev/Advanced.html</a>  (Scroll down)</p>
+
+
+
+<h2><br>Closing notes</h2>
+<p>Since you've got this far, that means you're now completely able to make your own templates.<br><br> 
+
+The more you work with & customize yours, the more you'll learn..<br><br>
+
+If you're ever lost or need a restart, there should be another file called "Default_Teamplate" contained within TOHE-DATA. This contains the latest default template.<br><br>
+
+If you haven't made one yet, this is the one I currently use:</p>
+<a href="https://pastebin.com/raw/j0DFCrFr" class="button" target="_blank">Copy ULTIMATE_Template.txt</a>
+</div>
+</div>
+
+
+
+<script>
+    function showAnswer() {
+        alert("rules:<b>RULES:</b>\\n\nrules:1. Do not cuss\\n2. Do not reveal roles\\n3. Don't snitch if you get converted.");
+    }
+</script>
+
+
+
+
+
+
+</body>
+</html>
