@@ -4,98 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOHE welcome text creation masterclass</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-		 .background {
-    position: relative;
-    padding: 20px;
-    max-width: 100%;
-    height: auto;
-}
-
-.background::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('wm_qfY.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: blur(5px); /* Adjust the blur radius as needed */
-    z-index: -1; /* Ensure the pseudo-element is behind the content */
-}
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.95); /* Adjust background color and opacity as needed */
-            border-radius: 10px; /* Rounded corners for the container */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
-        }
-        h1 {
-            text-align: center;
-        }
-		.p2 {
-            font-size: 1.6em; /* Adjust the font size as needed */
-            font-weight: bold;
-            color: #333; /* Change the color if needed */
-			text-align: center;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 20px auto;
-        }
-        p {
-            line-height: 1.6;
-			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-			font-family: "Georgia", serif;
-        }
-		 .button {
-			background: linear-gradient(120deg, #3498db, #8e44ad);
-			/* Adjust the angle (120deg) and colors (#3498db and #8e44ad) as needed */
-			color: white;
-			padding: 15px 32px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			font-size: 16px;
-			margin: 4px 2px;
-			cursor: pointer;
-			border-radius: 8px;
-			border: none; /* Remove border if needed */
-		}
-        .button2 {
-            padding: 20px 40px;
-            font-size: 24px;
-            cursor: pointer;
-            margin: 20px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(45deg, #4CAF50, #2196F3);
-            color: white;
-            text-decoration: none;
-            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-		.blue-text {
-            color: #1650a1; /* Blue color code */
-        }
-    </style>
+    <link rel="stylesheet" href="Styling/guideStyle.css">
 </head>
 <body>
 
@@ -114,23 +23,23 @@
             When inside your modded among us folder, go to -> TOHE-DATA -> <b>template.txt</b><br>
             Here you should see something like this:
         </p>
-        <img src="text1.png" alt="Image 1">
+        <img src="Styling/Images/text1.png" alt="Image 1">
 
         <p><br>Which Equates to this: </p>
-        <img src="text2.png" alt="Image 2">
+        <img src="Styling/Images/text2.png" alt="Image 2">
 
         <p>
             <br>And this:<br>
             <i>Don't worry; We'll get back to how this works later. </i>
         </p>
-        <img src="text3.png" alt="Image 3">
+        <img src="Styling/Images/text3.png" alt="Image 3">
 
         <h2><br><br>Writing your first message</h2>
         <p>
             <b>Tags</b><br>
             So as we saw, there came to be 2 messages from the 2 individuals lines. The way it does that is it uses Unique TAGS, these are a set of 3 special tags which ALWAYS apply for whenever an action happens (such as a meeting starting).<br>
             Try to look at these messages and figure out what they are:
-            <img src="text4.png" alt="Image 4">
+            <img src="Styling/Images/text4.png" alt="Image 4">
 
         <p>
             <br>Got it yet?<br>
@@ -147,8 +56,8 @@
             You can make multiple clones of the same tag, and everytime it is called (such as each time someone joins). ALL clones of it will be called of it in descending order, but each clone is a unique message.<br>
             Here's an example:
         </p>
-        <img src="text5.png" alt="Image 5">
-        <img src="text6.png" alt="Image 6">
+        <img src="Styling/Images/text5.png" alt="Image 5">
+        <img src="Styling/Images/text6.png" alt="Image 6">
 
         <p>
             <br><b>Create your own tag!</b><br>
@@ -156,7 +65,7 @@
             With that in mind make a `<b>rules:</b>` basic tag, and try to recreate this: (Don't worry if you get something wrong, attempt your best)<br><br>
 
             <i>You call it by typing <u>/t</u> rules in the chat</i>
-            <img src="text7.png" alt="Image 7">
+            <img src="Styling/Images/text7.png" alt="Image 7">
 
         <p>DO NOT continue, before attempting.</p>
         <button class="button" onclick="showAnswer()">Answer</button>
@@ -212,10 +121,11 @@
         </p>
         <a href="https://pastebin.com/raw/j0DFCrFr" class="button" target="_blank">Copy ULTIMATE_Template.txt</a>
     </div>
-    </div>
+
     <div class="container">
         <button class="button2" onclick="location.href='index.html'">Go Back</button> <button class="button2" onclick="location.href='gallery.html'">Gallery</button>
     </div>
+</div>
 
 
 

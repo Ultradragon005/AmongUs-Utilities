@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Creator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5.5.1/dist/iro.min.js"></script>
+    <link rel="stylesheet" href="Styling/pixelStyle.css">
+    
+</head>
+<body>
+    <div id="pixelContainer">
+        <div id="colorPickerContainer"></div>
+        <div class="gridContainer">
+            <div id="pixelGrid" class="pixelGrid">
+                <!-- 6x6 Grid will be generated here -->
+            </div>
+            <button onclick="copyAsHtml6x6()">Copy 6x6 Grid HTML</button>
+            <div id="pixelGrid8x8" class="pixelGrid">
+                <!-- 8x8 Grid will be generated here -->
+            </div>
+            <button onclick="copyAsHtml8x8()">Copy 8x8 Grid HTML</button>
+            <div id="sizeDisplay">Size: <input type="number" id="sizeInput" min="10" max="200" value="100" onchange="adjustSize(this.value)">%</div>
+            
+        </div>
+    </div>
+    <button class="button2" onclick="location.href='index.html'">Go Back</button>
+<script>
+let currentColor = '#FFFFFF';
+let currentSize = 100;
+let colorPicker;
+
+function createPixelGrid() {
+    const grids = [document.getElementById('pixelGrid'), document.getElementById('pixelGrid8x8')];
+    const gridSizes = [6, 8]; // Sizes of the grids
+
+    grids.forEach((grid, index) => {
+        let html = '';
+        for (let i = 0; i < gridSizes[index]; i++) {
+            for (let j = 0; j < gridSizes[index]; j++) {
+                html += `<span style="background-color:${currentColor};"></span>`;
+            }
+        }
+        grid.innerHTML = html;
+    });
+    attachPixelListeners();
+}
+
+function attachPixelListeners() {
+    const grids = document.querySelectorAll('.pixelGrid');
+    grids.forEach(grid => {
+        const pixels = grid.querySelectorAll('span');
+        pixels.forEach(pixel => {
+            pixel.addEventListener('click', () => {
+                pixel.style.backgroundColor = currentColor;
+            });
+        });
+    });
+}
+
+function setupColorPicker() {
+    colorPicker = new iro.ColorPicker("#colorPickerContainer", {
+        width: 200,
+        color: currentColor
+    });
+    colorPicker.on('color:change', function(color) {
+        currentColor = color.hexString;
+    });
+}
+
+function adjustSize(size) {
+    currentSize = size;
+    document.getElementById('sizeInput').value = size;
+}
+
+function copyAsHtml6x6() {
+    copyAsHtml('pixelGrid', 6);
+}
+
+function copyAsHtml8x8() {
+    copyAsHtml('pixelGrid8x8', 8);
+}
+
+function copyAsHtml(gridId, size) {
+    const grid = document.getElementById(gridId);
+    let copyText = `<size=${currentSize}%><line-height=85%>`;
+    const pixels = grid.querySelectorAll('span');
+    pixels.forEach((pixel, index) => {
+        const rgb = pixel.style.backgroundColor.match(/\d+/g).map(Number);
+        const colorHex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+        copyText += (colorHex !== '#ffffff' ? `<${colorHex}>█` : `<alpha=#00>█`);
+        if ((index + 1) % size === 0) {
+            copyText += '<br>';
+        }
+    });
+
+    copyText += '</line-height></size>';
+    navigator.clipboard.writeText(copyText).then(() => {
+        alert('Copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
+
+function componentToHex(c) {
+    const hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setupColorPicker();
+    createPixelGrid();
+});
+</script>
+</body>
+</html>

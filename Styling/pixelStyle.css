@@ -1,0 +1,81 @@
+ body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Use full viewport height */
+    }
+    #pixelContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background: white; /* Optional for better visibility */
+    }
+    .gridContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .pixelGrid {
+        display: grid;
+        margin-bottom: 20px;
+    }
+    #pixelGrid {
+        grid-template-columns: repeat(6, 20px); /* 6 columns */
+        grid-template-rows: repeat(6, 20px); /* 6 rows */
+    }
+    #pixelGrid8x8 {
+        grid-template-columns: repeat(8, 20px); /* 8 columns */
+        grid-template-rows: repeat(8, 20px); /* 8 rows */
+    }
+    .pixelGrid span {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+    #colorPickerContainer {
+        width: 200px;
+        height: 200px;
+        margin-right: 20px; /* Space between color picker and grids */
+    }
+    button {
+        height: 30px;
+        cursor: pointer;
+    }
+.button2 {
+    padding: 40px, 80px; /* Reduced padding to ensure text fits within the button */
+    height: 60px; /* Example fixed height */
+    line-height: 60px; /* Line height matches the button's height for vertical centering */
+    font-size: 24px;
+    cursor: pointer;
+    margin: 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #4CAF50, #2196F3);
+    color: white;
+    text-decoration: none;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-align: center; /* Ensure text is horizontally centered */
+    display: block; /* Optional, depending on use-case */
+}
+
+.button2:hover {
+    background: linear-gradient(45deg, #45a049, #1976D2);
+}
+    #sizeDisplay {
+        text-align: center;
+        margin-top: 10px;
+    }
+    #sizeInput {
+        width: 50px;
+        text-align: center;
+    }
