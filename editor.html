@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Rich Text Editor</title>
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  .title-box {
+    margin-bottom: 20px;
+  }
+  .editor, .title-input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .button2 {
+    padding: 20px 40px;
+    font-size: 24px;
+    cursor: pointer;
+    margin: 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #4CAF50, #2196F3);
+    color: white;
+    text-decoration: none;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.button2:hover {
+    background: linear-gradient(45deg, #45a049, #1976D2);
+}
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="title-box">
+            <label for="titleInput">Title:</label>
+            <div class="title-input" contenteditable="true" id="titleInput" placeholder="Enter title here"></div>
+        </div>
+
+        <div class="editor" contenteditable="true" id="editor">
+            Start typing here...
+        </div>
+        <div>
+            <input type="checkbox" id="boldCheckbox" onchange="toggleFormatting('bold')"> Bold
+            <input type="checkbox" id="italicCheckbox" onchange="toggleFormatting('italic')"> Italic
+            <input type="checkbox" id="underlineCheckbox" onchange="toggleFormatting('underline')"> Underline<br>
+            <input type="number" id="fontSizeInput" min="50" max="200" step="10" value="100"> Font Size (%)
+            <button onclick="applyFontSize()">Apply Size</button>
+            <button onclick="clearAllSizes()">Clear All Sizes</button><br>
+            <input type="color" id="colorInput" value="#000000"> Text Color
+            <button onclick="applyColor()">Apply Color</button>
+            <button onclick="clearAllColors()">Clear All Colors</button>
+        </div>
+        <button onclick="copyFormattedHtml()">Copy As Html Formatted</button><br><br>
+
+        Keybinds: <b>ctrl + b</b> <b>ctrl + i</b><b>ctrl + u</b><br><br>
+
+        READ BEFORE USING: This is a standalone editor to copy text formatted as HTML, you will have to add the tag yourself (example "rules:"). <br>
+        Before usage please familiarize yourself with the: <a href="guide.html">Welcome Msg GUIDE</a><br>
+        I recommend to put size & colors last. Or at least don't edit ones you already edited (kinda wack rn if u do). Title won't work if you don't have TOHE 2.0.0 access <br>
+        I will try to update it to make it more automatic, but as of currently be aware of these stuff. Also will make it look much more prettied than it is rn in the neear future.<br>
+
+        <button class="button2" onclick="location.href='index.html'">Go Back</button>
+    </div>
+
+<script>
+  function rgbToHex(rgb) {
+    let [r, g, b] = rgb.match(/\d+/g).map(Number);
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  }
+
+  function toggleFormatting(format) {
+    document.execCommand(format);
+    updateCheckboxStates();
+  }
+
+  function applyFontSize() {
+    var size = document.getElementById('fontSizeInput').value + 'px';
+    applyStyle('fontSize', size);
+  }
+
+  function applyColor() {
+    var color = document.getElementById('colorInput').value;
+    applyStyle('color', color);
+  }
+
+  function applyStyle(styleType, value) {
+    var selection = window.getSelection();
+    if (selection.rangeCount) {
+      var range = selection.getRangeAt(0);
+      if (!range.collapsed) {
+        var selectedContents = range.extractContents();
+        clearExistingStyles(selectedContents, styleType);
+
+        var span = document.createElement('span');
+        span.style[styleType] = value;
+        span.appendChild(selectedContents);
+
+        range.insertNode(span);
+      }
+    }
+  }
+
+  function clearExistingStyles(node, styleType) {
+    if (node.querySelectorAll) {
+      var spans = node.querySelectorAll('span');
+      spans.forEach(span => {
+        span.style[styleType] = '';
+        if (!span.style.cssText) {
+          var parent = span.parentNode;
+          while (span.firstChild) parent.insertBefore(span.firstChild, span);
+          parent.removeChild(span);
+        }
+      });
+    }
+  }
+
+  function clearAllStyles(styleType) {
+    var editor = document.getElementById('editor');
+    var spans = editor.querySelectorAll('span');
+    spans.forEach(span => span.style[styleType] = '');
+    document.getElementById('editor').normalize();
+  }
+
+  function clearAllSizes() {
+    clearAllStyles('fontSize');
+  }
+
+  function clearAllColors() {
+    clearAllStyles('color');
+  }
+
+  function copyFormattedHtml() {
+    var title = document.getElementById('titleInput').innerHTML.trim();
+    var editorContent = document.getElementById('editor').innerHTML;
+
+    // Convert newlines and divs to <br> and remove all other HTML tags for one-line compatibility
+    editorContent = editorContent.replace(/<div>/g, '<br>').replace(/<\/div>/g, '');
+    editorContent = editorContent.replace(/\n/g, '<br>'); // Converts newline characters to <br> if any
+
+    // Update regex to convert RGB to Hex and format size and color
+    editorContent = editorContent.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
+      color = color.trim().startsWith('rgb') ? rgbToHex(color) : color;
+      size = size.replace(' ', ''); // Ensure no spaces in size value
+      return `<size=${size}><color=${color}>`;
+    });
+    editorContent = editorContent.replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
+      size = size.replace(' ', ''); // Ensure no spaces in size value
+      return `<size=${size}>`;
+    });
+    editorContent = editorContent.replace(/<span style="color:([^;]+);?">/g, (match, color) => {
+      color = color.trim().startsWith('rgb') ? rgbToHex(color) : color;
+      return `<color=${color}>`;
+    });
+    editorContent = editorContent.replace(/<\/span>/g, '</color></size>');
+    
+    // Remove all line breaks and tabs to make text one line
+    editorContent = editorContent.replace(/[\r\n\t]+/g, '');
+
+    var fullContent = '<title>' + title + '</title>' + editorContent;
+    navigator.clipboard.writeText(fullContent)
+      .then(() => alert('Formatted HTML copied to clipboard'))
+      .catch(err => console.error('Failed to copy: ', err));
+  }
+
+  function updateCheckboxStates() {
+    document.getElementById('boldCheckbox').checked = document.queryCommandState('bold');
+    document.getElementById('italicCheckbox').checked = document.queryCommandState('italic');
+    document.getElementById('underlineCheckbox').checked = document.queryCommandState('underline');
+  }
+</script>
+
+</body>
+</html>
