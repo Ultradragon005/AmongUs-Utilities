@@ -224,16 +224,18 @@
                 return color.trim().startsWith('rgb') ? rgbToHex(color) : color;
             }
 
-            // Apply formatting to the title
-            title = title.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
-                return `<size=${size}><color=${convertToHex(color)}>`;
-            }).replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
-                return `<size=${size}>`;
-            }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
-                return `<color=${convertToHex(color)}>`;
-            }).replace(/<\/span>/g, '</color></size>');
+            // Apply formatting transformations to the title
+            if (title) {
+                title = title.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
+                    return `<size=${size}><color=${convertToHex(color)}>`;
+                }).replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
+                    return `<size=${size}>`;
+                }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
+                    return `<color=${convertToHex(color)}>`;
+                }).replace(/<\/span>/g, '</color></size>');
+            }
 
-            // Apply similar transformations to editor content
+            // Apply formatting transformations to the editor content
             editorContent = editorContent.replace(/<div>/g, '<br>').replace(/<\/div>/g, '').replace(/\n/g, '<br>');
             editorContent = editorContent.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
                 return `<size=${size}><color=${convertToHex(color)}>`;
@@ -243,12 +245,13 @@
                 return `<color=${convertToHex(color)}>`;
             }).replace(/<\/span>/g, '</color></size>');
 
+            // Remove the first <br> from editor content if it exists at the start
             editorContent = editorContent.replace(/^(<br>)/, '');
 
             // Concatenate title and content, ensuring line breaks are removed
-            var fullContent = '<title>' + title + '</title>' + editorContent;
-            fullContent = fullContent.replace(/\u2800/g, ' ');
-            fullContent = fullContent.replace(/[\r\n\t]+/g, ''); // Remove all line breaks and tabs
+            var fullContent = title ? '<title>' + title + '</title>' : '';
+            fullContent += editorContent;
+            fullContent = fullContent.replace(/\u2800/g, ' ').replace(/[\r\n\t]+/g, ''); // Remove all line breaks and tabs
 
             // Copy to clipboard
             navigator.clipboard.writeText(fullContent)
