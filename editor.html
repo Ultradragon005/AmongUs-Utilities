@@ -144,7 +144,7 @@
                 span.appendChild(range.extractContents());
                 range.insertNode(span);
 
-                var space = document.createTextNode("\u2800"); // Using Unicode Character '⠀'
+                var space = document.createTextNode("\u200B"); // Using Unicode Character '⠀'
                 span.parentNode.insertBefore(space, span.nextSibling);
                 range.setStartAfter(space);
                 range.setEndAfter(space);
@@ -227,9 +227,9 @@
             // Apply formatting transformations to the title
             if (title) {
                 title = title.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
-                    return `<size=${size}><color=${convertToHex(color)}>`;
+                    return `<size=${size.trim()}><color=${convertToHex(color)}>`;
                 }).replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
-                    return `<size=${size}>`;
+                    return `<size=${size.trim()}>`;
                 }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
                     return `<color=${convertToHex(color)}>`;
                 }).replace(/<\/span>/g, '</color></size>');
@@ -238,9 +238,9 @@
             // Apply formatting transformations to the editor content
             editorContent = editorContent.replace(/<div>/g, '<br>').replace(/<\/div>/g, '').replace(/\n/g, '<br>');
             editorContent = editorContent.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
-                return `<size=${size}><color=${convertToHex(color)}>`;
+                return `<size=${size.trim()}><color=${convertToHex(color)}>`;
             }).replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
-                return `<size=${size}>`;
+                return `<size=${size.trim()}>`;
             }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
                 return `<color=${convertToHex(color)}>`;
             }).replace(/<\/span>/g, '</color></size>');
@@ -251,7 +251,7 @@
             // Concatenate title and content, ensuring line breaks are removed
             var fullContent = title ? '<title>' + title + '</title>' : '';
             fullContent += editorContent;
-            fullContent = fullContent.replace(/\u2800/g, ' ').replace(/[\r\n\t]+/g, ''); // Remove all line breaks and tabs
+            fullContent = fullContent.replace(/\u2800/g, '').replace(/[\r\n\t]+/g, ''); // Remove all line breaks and tabs
 
             // Copy to clipboard
             navigator.clipboard.writeText(fullContent)
