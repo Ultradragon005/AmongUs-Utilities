@@ -250,11 +250,12 @@
             const final1 = /<span style="font-family: Arial, sans-serif; font-size: 16px; white-space-collapse: preserve;">/g;
             const spanRegex = /<span[^>]*>[\s\S]*?<\/span>/g;
             const again = /<span id="docs-internal-guid-[0-9a-fA-F-]+">/g;
-            let outputString = html.replace(regex, '').replace(spans, '').replace(final1, '').replace(/<\/span>/, '').replace(spanRegex, '').replace(again, '');
+            let outputString = html.replace(regex, '').replace(spans, '').replace(final1, '').replace(/<\/span>/, '')
+                .replace(spanRegex, '').replace(again, '').replace(/<span><br>/g, '').replace(/<\/span>/, '');
 
-            for (let i = 0; i < 100; i++) {
+            /*for (let i = 0; i < 100; i++) {
                 outputString = outputString.replace(/<\/span>/, '');
-            }
+            }*/
             //outputString = outputString.replace(fixstring, '<');
             return outputString;
         }
