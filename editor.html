@@ -106,7 +106,7 @@
             READ BEFORE USING: This is a standalone editor to copy text formatted as HTML, you will have to add the tag yourself (example "rules:"). <br>
             Familiarize yourself with the <a href="guide.html">Welcome Msg GUIDE</a> before usage. <br>
             I recommend to put size & colors last. Or at least don't edit ones you already edited (kinda wack rn if u do).<br>
-            Title won't work if you don't have TOHE 2.0.0 access (also colors and size is broken for it rn, I will fix later) <br>
+            Title won't work if you don't have TOHE 2.0.0 access. <br>
             I will try to update it to make it more automatic, but as of currently be aware of these stuff. Also will make it look much more prettier than it is rn in the near future.<br>
         </p>
 
@@ -195,32 +195,38 @@
             var title = document.getElementById('titleInput').innerHTML.trim();
             var editorContent = document.getElementById('editor').innerHTML;
 
-            
-            editorContent = editorContent.replace(/⠀/g, '')
-            // Convert newlines and divs to <br> and remove all other HTML tags for one-line compatibility
-            editorContent = editorContent.replace(/<div>/g, '<br>').replace(/<\/div>/g, '');
-            editorContent = editorContent.replace(/\n/g, '<br>'); // Converts newline characters to <br> if any
+            // Function to convert RGB to Hex
+            function convertToHex(color) {
+                return color.trim().startsWith('rgb') ? rgbToHex(color) : color;
+            }
 
-            // Update regex to convert RGB to Hex and format size and color
-            editorContent = editorContent.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
-                color = color.trim().startsWith('rgb') ? rgbToHex(color) : color;
-                size = size.replace(' ', ''); // Ensure no spaces in size value
-                return `<size=${size}><color=${color}>`;
-            });
-            editorContent = editorContent.replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
-                size = size.replace(' ', ''); // Ensure no spaces in size value
+            // Apply formatting to the title
+            title = title.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
+                return `<size=${size}><color=${convertToHex(color)}>`;
+            }).replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
                 return `<size=${size}>`;
-            });
-            editorContent = editorContent.replace(/<span style="color:([^;]+);?">/g, (match, color) => {
-                color = color.trim().startsWith('rgb') ? rgbToHex(color) : color;
-                return `<color=${color}>`;
-            });
-            editorContent = editorContent.replace(/<\/span>/g, '</color></size>');
+            }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
+                return `<color=${convertToHex(color)}>`;
+            }).replace(/<\/span>/g, '</color></size>');
 
-            // Remove all line breaks and tabs to make text one line
-            editorContent = editorContent.replace(/[\r\n\t]+/g, '');
+            // Apply similar transformations to editor content
+            editorContent = editorContent.replace(/<div>/g, '<br>').replace(/<\/div>/g, '').replace(/\n/g, '<br>');
+            editorContent = editorContent.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
+                return `<size=${size}><color=${convertToHex(color)}>`;
+            }).replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
+                return `<size=${size}>`;
+            }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
+                return `<color=${convertToHex(color)}>`;
+            }).replace(/<\/span>/g, '</color></size>');
 
+            editorContent = editorContent.replace(/^(<br>)/, '');
+
+            // Concatenate title and content, ensuring line breaks are removed
             var fullContent = '<title>' + title + '</title>' + editorContent;
+            fullContent = fullContent.replace(/\u2800/g, ' ');
+            fullContent = fullContent.replace(/[\r\n\t]+/g, ''); // Remove all line breaks and tabs
+
+            // Copy to clipboard
             navigator.clipboard.writeText(fullContent)
                 .then(() => alert('Formatted HTML copied to clipboard'))
                 .catch(err => console.error('Failed to copy: ', err));
