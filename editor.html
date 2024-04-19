@@ -12,6 +12,10 @@
             height: 100vh;
             margin: 0;
         }
+        header {
+            padding: 20px; /* Adjust padding as needed */
+            text-align: center;
+        }
 
         .container {
             display: flex;
@@ -27,17 +31,34 @@
         }
 
         .title-input, .editor {
-            width: 40%; /* Adjusted width to make the boxes narrower */
+            width: 40%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             margin-bottom: 10px;
         }
 
-        .side-controls {
+        .name-input {
+            width: 30%; /* Reduced width for smaller name box */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px; /* Spacing between name box and button */
+        }
+
+        .side-controls, .actions-container {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centering the controls vertically */
+            align-items: center;
+        }
+
+        .actions-container {
+            flex-direction: row;
+            align-items: center;
+            margin-top: 10px;
+            justify-content: space-around; /* Adjusts space around items */
+            margin-top: 10px;
+            gap: 10px; /* Adds space between items */
         }
 
         button {
@@ -69,9 +90,11 @@
     </style>
 </head>
 <body>
-
     <div class="container">
 
+        <header>
+            <h1>TOHE welcome text editor</h1>
+        </header>
         <h3>Title:</h3>
         <div class="title-box">
             <div class="title-input" contenteditable="true" id="titleInput" placeholder="Enter title here"></div><label for="titleInput">‎‎‎‎⠀⠀ ⠀</label>
@@ -95,9 +118,15 @@
                 <button onclick="applyColor()">Apply Color</button>
             </div>
         </div>
+        <div class="actions-container">
+            <label for="nameInput">  Name:‎ </label>‎ <div class="name-input" contenteditable="true" id="nameInput" placeholder="Enter name here">welcome</div>
+            <button onclick="clearAllSizes()">Clear All Sizes</button>
+            <button onclick="clearAllColors()">Clear All Colors</button>
+        </div>
+
+        <button onclick="copyFormattedHtml()">Copy As Html Formatted</button>
         <p>
-            <button onclick="clearAllSizes()">Clear All Sizes</button> <button onclick="copyFormattedHtml()">Copy As Html Formatted</button>
-            <button onclick="clearAllColors()">Clear All Colors</button> <br><br>
+
         </p>
 
         <p>Keybinds: <b>ctrl + b</b> | <b>ctrl + i</b> | <b>ctrl + u</b><br><br></p>
@@ -112,7 +141,6 @@
 
         <button class="button2" onclick="location.href='index.html'">Go Back</button>
     </div>
-
     <script>
         function rgbToHex(rgb) {
             let [r, g, b] = rgb.match(/\d+/g).map(Number);
@@ -215,8 +243,24 @@
         function clearAllColors() {
             clearAllStyles('color');
         }
+        function removeSpecificSpan(html) {
+            // Regex to match the specific <span> structure, including all attributes and nested elements
+            const regex = /<span style="font-size: 12pt; font-family: Arial, sans-serif; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-variant-position: normal; vertical-align: baseline; white-space-collapse: preserve;">/g;
+            const spans = /<\/span><\/span>/g;
+            const final1 = /<span style="font-family: Arial, sans-serif; font-size: 16px; white-space-collapse: preserve;">/g;
+            const spanRegex = /<span[^>]*>[\s\S]*?<\/span>/g;
+            const again = /<span id="docs-internal-guid-[0-9a-fA-F-]+">/g;
+            let outputString = html.replace(regex, '').replace(spans, '').replace(final1, '').replace(/<\/span>/, '').replace(spanRegex, '').replace(again, '');
+
+            for (let i = 0; i < 100; i++) {
+                outputString = outputString.replace(/<\/span>/, '');
+            }
+            //outputString = outputString.replace(fixstring, '<');
+            return outputString;
+        }
 
         function copyFormattedHtml() {
+            var name = document.getElementById('nameInput').innerText.trim();
             var title = document.getElementById('titleInput').innerHTML.trim();
             var editorContent = document.getElementById('editor').innerHTML;
 
@@ -234,7 +278,7 @@
                 }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
                     return `<color=${convertToHex(color)}>`;
                 }).replace(/<\/span>\u200B/g, '</size>')
-                  .replace(/<\/span>\u200C/g, '</color>');
+                    .replace(/<\/span>\u200C/g, '</color>');
             }
 
             // Apply formatting transformations to the editor content
@@ -246,19 +290,14 @@
             }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
                 return `<color=${convertToHex(color)}>`;
             }).replace(/<\/span>\u200B/g, '</size>')
-              .replace(/<\/span>\u200C/g, '</color>');
+                .replace(/<\/span>\u200C/g, '</color>');
 
             // Remove the first <br> from editor content if it exists at the start
             editorContent = editorContent.replace(/^(<br>)/, '');
 
-            // Concatenate title and content, ensuring line breaks are removed
-            var fullContent = title ? '<title>' + title + '</title>' : '';
-            fullContent += editorContent;
-            fullContent = fullContent.replace(/\u2800/g, '')
-                .replace(/<\/span>/g, '')
-                .replace(/[\r\n\t]+/g, ''); // Remove all line breaks and tabs
-
-            // Copy to clipboard
+            // existing transformations and copy to clipboard logic
+            var fullContent = (name ? name + ':' : '') + (title ? '<title>' + title + '</title>' : '') + editorContent;
+            fullContent = removeSpecificSpan(fullContent);
             navigator.clipboard.writeText(fullContent)
                 .then(() => alert('Formatted HTML copied to clipboard'))
                 .catch(err => console.error('Failed to copy: ', err));
@@ -270,6 +309,5 @@
             document.getElementById('underlineCheckbox').checked = document.queryCommandState('underline');
         }
     </script>
-
 </body>
 </html>
