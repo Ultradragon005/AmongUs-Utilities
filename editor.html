@@ -120,8 +120,9 @@
         }
 
         function toggleFormatting(format) {
+            var activeElement = document.activeElement; // Get the currently focused element
             document.execCommand(format);
-            updateCheckboxStates();
+            updateCheckboxStatesBasedOnSelection(activeElement);
         }
 
         function applyFontSize() {
@@ -143,22 +144,12 @@
                 span.appendChild(range.extractContents());
                 range.insertNode(span);
 
-                // Insert the special non-breaking space after the span
                 var space = document.createTextNode("\u2800"); // Using Unicode Character '⠀'
                 span.parentNode.insertBefore(space, span.nextSibling);
-
-                // Move the cursor right after the inserted special non-breaking space
                 range.setStartAfter(space);
                 range.setEndAfter(space);
                 selection.removeAllRanges();
                 selection.addRange(range);
-
-                // Remove the space without relying on execCommand
-                /*setTimeout(function () {
-                    if (space.parentNode) {
-                        space.parentNode.removeChild(space);
-                    }
-                }, 1000);*/ // Timeout ensures the DOM has updated before removal
             }
         }
 
@@ -175,13 +166,46 @@
                 });
             }
         }
-
-        function clearAllStyles(styleType) {
-            var editor = document.getElementById('editor');
-            var spans = editor.querySelectorAll('span');
-            spans.forEach(span => span.style[styleType] = '');
-            document.getElementById('editor').normalize();
+        function updateCheckboxStates() {
+            // This function is called with no specific target, updates based on any active element
+            updateCheckboxStatesBasedOnSelection(document.activeElement);
         }
+
+        function updateCheckboxStatesBasedOnSelection(activeElement) {
+            var isBold = document.queryCommandState('bold');
+            var isItalic = document.queryCommandState('italic');
+            var isUnderline = document.queryCommandState('underline');
+
+            document.getElementById('boldCheckbox').checked = isBold;
+            document.getElementById('italicCheckbox').checked = isItalic;
+            document.getElementById('underlineCheckbox').checked = isUnderline;
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && (event.key === 'b' || event.key === 'i' || event.key === 'u')) {
+                event.preventDefault(); // Prevent default to stop any browser-specific functionality
+                var cmd = (event.key === 'b') ? 'bold' : (event.key === 'i' ? 'italic' : 'underline');
+                toggleFormatting(cmd);
+            }
+        });
+
+        // Clear styles functions
+        function clearAllStyles(styleType) {
+            ['titleInput', 'editor'].forEach(id => {
+                var node = document.getElementById(id);
+                var spans = node.querySelectorAll('span');
+                spans.forEach(span => {
+                    span.style[styleType] = '';
+                    if (!span.style.cssText) {
+                        var parent = span.parentNode;
+                        while (span.firstChild) parent.insertBefore(span.firstChild, span);
+                        parent.removeChild(span);
+                    }
+                });
+            });
+            document.getElementById('editor').normalize(); // Normalize the editor
+        }
+
 
         function clearAllSizes() {
             clearAllStyles('fontSize');
