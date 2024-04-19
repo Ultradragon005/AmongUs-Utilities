@@ -144,7 +144,8 @@
                 span.appendChild(range.extractContents());
                 range.insertNode(span);
 
-                var space = document.createTextNode("\u200B"); // Using Unicode Character '⠀'
+                var spaceChar = styleType === 'color' ? "\u200C" : "\u200B";
+                var space = document.createTextNode(spaceChar);
                 span.parentNode.insertBefore(space, span.nextSibling);
                 range.setStartAfter(space);
                 range.setEndAfter(space);
@@ -232,7 +233,8 @@
                     return `<size=${size.trim()}>`;
                 }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
                     return `<color=${convertToHex(color)}>`;
-                }).replace(/<\/span>/g, '</color></size>');
+                }).replace(/<\/span>\u200B/g, '</size>')
+                  .replace(/<\/span>\u200C/g, '</color>');
             }
 
             // Apply formatting transformations to the editor content
@@ -243,7 +245,8 @@
                 return `<size=${size.trim()}>`;
             }).replace(/<span style="color:([^;]+);?">/g, (match, color) => {
                 return `<color=${convertToHex(color)}>`;
-            }).replace(/<\/span>/g, '</color></size>');
+            }).replace(/<\/span>\u200B/g, '</size>')
+              .replace(/<\/span>\u200C/g, '</color>');
 
             // Remove the first <br> from editor content if it exists at the start
             editorContent = editorContent.replace(/^(<br>)/, '');
@@ -251,7 +254,9 @@
             // Concatenate title and content, ensuring line breaks are removed
             var fullContent = title ? '<title>' + title + '</title>' : '';
             fullContent += editorContent;
-            fullContent = fullContent.replace(/\u2800/g, '').replace(/[\r\n\t]+/g, ''); // Remove all line breaks and tabs
+            fullContent = fullContent.replace(/\u2800/g, '')
+                .replace(/<\/span>/g, '')
+                .replace(/[\r\n\t]+/g, ''); // Remove all line breaks and tabs
 
             // Copy to clipboard
             navigator.clipboard.writeText(fullContent)
