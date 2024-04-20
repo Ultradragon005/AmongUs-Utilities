@@ -23,6 +23,11 @@
             align-items: center;
             width: 80%;
         }
+        input[type="checkbox"] {
+            accent-color: blue; /* Changes the check mark color in some browsers */
+            width: 20px; /* Bigger checkbox */
+            height: 20px;
+        }
 
         .title-box, .editor-container {
             width: 100%;
@@ -70,6 +75,49 @@
             cursor: pointer;
             margin-top: 10px;
         }
+            button:hover {
+                background-color: #004a99;
+            }
+
+        .symbol-button {
+            padding: 10px 16px;
+            margin: 5px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            color: #000;
+        }
+
+            .symbol-button:hover {
+                background-color: #e2e6ea;
+            }
+
+        .Applybutton {
+            padding: 8px 16px;
+            background: linear-gradient(45deg, #ab7038, #aec720);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+            .Applybutton:hover {
+                background: linear-gradient(45deg, #603f1f, #606e12);
+            }
+        .HtmlButton {
+            padding: 8px 16px;
+            background: linear-gradient(45deg, #06264f, #4d1139);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+            .HtmlButton:hover {
+                background: linear-gradient(45deg, #020b18, #15050f);
+            }
 
         .button2 {
             padding: 20px 40px;
@@ -91,10 +139,20 @@
 </head>
 <body>
     <div class="container">
-
+        <p><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
         <header>
             <h1>TOHE welcome text editor</h1>
         </header>
+
+        <p>
+            READ BEFORE USING: This is a standalone editor to copy text formatted as tohe-templates.<br>
+            Familiarize yourself with the <a href="guide.html">Welcome Msg GUIDE</a> before usage. <br>
+            I recommend to put size & colors last. Or at least don't edit ones you already edited (kinda wack rn if u do).<br>
+            Title won't work if you don't have TOHE 2.0.0 access. <br>
+            Has some issues, please report. Also will make it look much more prettier than it is rn in the near future.<br><br>
+            please report any issues to Drakos on discord, thx <br>
+
+        </p>
         <h3>Title:</h3>
         <div class="title-box">
             <div class="title-input" contenteditable="true" id="titleInput" placeholder="Enter title here"></div><label for="titleInput">‎‎‎‎⠀⠀ ⠀</label>
@@ -113,9 +171,9 @@
 
             <div class="side-controls">
                 <input type="number" id="fontSizeInput" min="50" max="200" step="10" value="100"> Font Size (%)
-                <button onclick="applyFontSize()">Apply Size</button><br>
-                <input type="color" id="colorInput" value="#000000"> Text Color
-                <button onclick="applyColor()">Apply Color</button>
+                <button class="Applybutton" onclick="applyFontSize()">Apply Size</button><br>
+                <input type="color" id="colorInput" value="#000000"> Text Color<br>
+                <button class="Applybutton" onclick="applyColor()">Apply Color</button>
             </div>
         </div>
         <div class="actions-container">
@@ -124,28 +182,79 @@
             <button onclick="clearAllColors()">Clear All Colors</button>
         </div>
 
-        <button onclick="copyFormattedHtml()">Copy As Html Formatted</button>
+        <button class="HtmlButton" onclick="copyFormattedHtml()">Copy As Html Formatted</button>
         <p>
 
         </p>
 
         <p>Keybinds: <b>ctrl + b</b> | <b>ctrl + i</b> | <b>ctrl + u</b><br><br></p>
+        <div class="symbols-section">
+            <h3>Copy Symbols:</h3>
+            <button class="symbol-button" onclick="copyToClipboard('〈')">〈</button>
+            <button class="symbol-button" onclick="copyToClipboard('〉')">〉</button>
+            <button class="symbol-button" onclick="copyToClipboard('《')">《</button>
+            <button class="symbol-button" onclick="copyToClipboard('》')">》</button>
+            <button class="symbol-button" onclick="copyToClipboard('『')">『</button>
+            <button class="symbol-button" onclick="copyToClipboard('』')">』</button>
+            <button class="symbol-button" onclick="copyToClipboard('«')">«</button>
+            <button class="symbol-button" onclick="copyToClipboard('»')">»</button>
+            <button class="symbol-button" onclick="copyToClipboard('＜')">＜</button>
+            <button class="symbol-button" onclick="copyToClipboard('＞')">＞</button>
+            <button class="symbol-button" onclick="copyToClipboard('•')">•</button>
+            <button class="symbol-button" onclick="copyToClipboard('▪')">▪</button>
+            <button class="symbol-button" onclick="copyToClipboard('▫')">▫</button>
+            <button class="symbol-button" onclick="copyToClipboard('☃')">☃</button>
+            <button class="symbol-button" onclick="copyToClipboard('♨')">♨</button>
+            <button class="symbol-button" onclick="copyToClipboard('☯')">☯</button>
+            <button class="symbol-button" onclick="copyToClipboard('✚')">✚</button>
+            <button class="symbol-button" onclick="copyToClipboard('❖')">❖</button>
+            <button class="symbol-button" onclick="copyToClipboard('♥')">♥</button>
+            <button class="symbol-button" onclick="copyToClipboard('♡')">♡</button>
+            <button class="symbol-button" onclick="copyToClipboard('☹')">☹</button>
+            <button class="symbol-button" onclick="copyToClipboard('☺')">☺</button>
+            <button class="symbol-button" onclick="copyToClipboard('〠')">〠</button>
+            <button class="symbol-button" onclick="copyToClipboard('↕')">↕</button>
+            <button class="symbol-button" onclick="copyToClipboard('↖')">↖</button>
+            <button class="symbol-button" onclick="copyToClipboard('↗')">↗</button>
+            <button class="symbol-button" onclick="copyToClipboard('↘')">↘</button>
+            <button class="symbol-button" onclick="copyToClipboard('↙')">↙</button>
+            <button class="symbol-button" onclick="copyToClipboard('↸')">↸</button>
+            <button class="symbol-button" onclick="copyToClipboard('↹')">↹</button>
+            <button class="symbol-button" onclick="copyToClipboard('⇦')">⇦</button>
+            <button class="symbol-button" onclick="copyToClipboard('⇧')">⇧</button>
+            <button class="symbol-button" onclick="copyToClipboard('⇨')">⇨</button>
+            <button class="symbol-button" onclick="copyToClipboard('⇩')">⇩</button>
+            <button class="symbol-button" onclick="copyToClipboard('⌅')">⌅</button>
+            <button class="symbol-button" onclick="copyToClipboard('⌆')">⌆</button>
+            <button class="symbol-button" onclick="copyToClipboard('⏎')">⏎</button>
+            <button class="symbol-button" onclick="copyToClipboard('▶')">▶</button>
+            <button class="symbol-button" onclick="copyToClipboard('➔')">➔</button>
+            <button class="symbol-button" onclick="copyToClipboard('⤴')">⤴</button>
+            <button class="symbol-button" onclick="copyToClipboard('⤵')">⤵</button>
+            <button class="symbol-button" onclick="copyToClipboard('↓')">↓</button>
+            <button class="symbol-button" onclick="copyToClipboard('↔')">↔</button>
+            <button class="symbol-button" onclick="copyToClipboard('←')">←</button>
+            <button class="symbol-button" onclick="copyToClipboard('→')">→</button>
+            <button class="symbol-button" onclick="copyToClipboard('↑')">↑</button>
+            <button class="symbol-button" onclick="copyToClipboard('⇵')">⇵</button>
+            <button class="symbol-button" onclick="copyToClipboard('⬅')">⬅</button>
+            <button class="symbol-button" onclick="copyToClipboard('⬆')">⬆</button>
+            <button class="symbol-button" onclick="copyToClipboard('⬇')">⬇</button>
+            <button class="symbol-button" onclick="copyToClipboard('●')">●</button>
+            <button class="symbol-button" onclick="copyToClipboard('⚽')">⚽</button>
+            <button class="symbol-button" onclick="copyToClipboard('⚾')">⚾</button>
+            <button class="symbol-button" onclick="copyToClipboard('◉')">◉</button>
+            <button class="symbol-button" onclick="copyToClipboard('🆚')">🆚</button>
+            <button class="symbol-button" onclick="copyToClipboard('⚠')">⚠</button>
+            <button class="symbol-button" onclick="copyToClipboard('◈')">◈</button>
+        </div>
 
-        <p>
-            READ BEFORE USING: This is a standalone editor to copy text formatted as tohe-templates.<br>
-            Familiarize yourself with the <a href="guide.html">Welcome Msg GUIDE</a> before usage. <br>
-            I recommend to put size & colors last. Or at least don't edit ones you already edited (kinda wack rn if u do).<br>
-            Title won't work if you don't have TOHE 2.0.0 access. <br>
-            Has some issues, please report. Also will make it look much more prettier than it is rn in the near future.<br><br>
-            please report any issues to Drakos on discord, thx <br>
-
-        </p>
         <h3>Tutorial:</h3>
         <video width="320" height="180" controls>
             <source src="Styling/Images/tutorial.mp4" type="video/mp4">
-            </video>
+        </video>
 
-            <button class="button2" onclick="location.href='index.html'">Go Back</button>
+        <button class="button2" onclick="location.href='index.html'">Go Back</button>
     </div>
     <script>
         function rgbToHex(rgb) {
@@ -240,7 +349,11 @@
             });
             document.getElementById('editor').normalize(); // Normalize the editor
         }
-
+        function copyToClipboard(symbol) {
+            navigator.clipboard.writeText(symbol)
+                .then(() => alert(symbol + ' copied to clipboard!'))
+                .catch(err => console.error('Error copying text: ', err));
+        }
 
         function clearAllSizes() {
             clearAllStyles('fontSize');
@@ -250,14 +363,15 @@
             clearAllStyles('color');
         }
         function removeSpecificSpan(html) {
-            // Regex to match the specific <span> structure, including all attributes and nested elements
+            // Extra security measures
             const regex = /<span style="font-size: 12pt; font-family: Arial, sans-serif; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-variant-position: normal; vertical-align: baseline; white-space-collapse: preserve;">/g;
             const spans = /<\/span><\/span>/g;
             const final1 = /<span style="font-family: Arial, sans-serif; font-size: 16px; white-space-collapse: preserve;">/g;
             const spanRegex = /<span[^>]*>[\s\S]*?<\/span>/g;
             const again = /<span id="docs-internal-guid-[0-9a-fA-F-]+">/g;
             let outputString = html.replace(regex, '').replace(spans, '').replace(final1, '').replace(/<\/span>/, '')
-                .replace(spanRegex, '').replace(again, '').replace(/<span><br>/g, '').replace(/<\/span>/, '');
+                .replace(spanRegex, '').replace(again, '').replace(/<span><br>/g, '').replace(/<\/span>/, '')
+                .replace(/&nbsp;/g, '');
 
             /*for (let i = 0; i < 100; i++) {
                 outputString = outputString.replace(/<\/span>/, '');
