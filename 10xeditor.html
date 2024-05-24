@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Art Creator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+    }
+
+    #pixelGrid {
+        display: grid;
+        grid-template-columns: repeat(10, 20px); /* Adjusted for 10 columns */
+        grid-template-rows: repeat(10, 20px); /* Adjusted for 10 rows */
+    }
+
+    #pixelGrid span {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+
+    input[type="color"] {
+        width: 50px;
+        height: 30px;
+        vertical-align: middle;
+    }
+
+    button {
+        height: 30px;
+        margin-left: 10px;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    #sizeDisplay {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    #sizeInput {
+        width: 50px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div>
+<div id="pixelContainer">
+    <div id="pixelGrid">
+    <!-- Grid will be generated here -->
+    </div>
+</div>
+<br><br>
+<input type="color" id="colorPicker" value="#ffffff">
+<button onclick="copyAsHtml()">Copy As Html Formatted</button>
+<div id="sizeDisplay">Size: <input type="number" id="sizeInput" min="10" max="200" value="100" onchange="adjustSize(this.value)">%</div>
+</div>
+<script>
+let currentSize = 100;
+
+function createPixelGrid() {
+    const pixelGrid = document.getElementById('pixelGrid');
+    const colorPicker = document.getElementById('colorPicker').value;
+
+    let html = '';
+
+    for (let i = 0; i < 10; i++) { /* Adjusted for 10 rows */
+        for (let j = 0; j < 10; j++) { /* Adjusted for 10 columns */
+            html += `<span style="background-color:${colorPicker};"></span>`;
+        }
+    }
+
+    pixelGrid.innerHTML = html;
+    attachPixelListeners();
+}
+
+function attachPixelListeners() {
+    const pixels = document.querySelectorAll('#pixelGrid span');
+    pixels.forEach(pixel => {
+        pixel.addEventListener('click', () => {
+            const colorPicker = document.getElementById('colorPicker').value;
+            pixel.style.backgroundColor = colorPicker;
+        });
+    });
+}
+
+function adjustSize(size) {
+    currentSize = size;
+    document.getElementById('sizeInput').value = size;
+}
+
+function copyAsHtml() {
+    const pixels = document.querySelectorAll('#pixelGrid span');
+    let copyText = `<size=${currentSize}%>`;
+	copyText += '<font="VCR SDF">'; // Deletes outlines
+    copyText += '<line-height=85%>';
+
+    pixels.forEach((pixel, index) => {
+        const rgb = pixel.style.backgroundColor.match(/\d+/g).map(Number);
+        const colorHex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+        if (colorHex !== '#ffffff') {
+            copyText += `<${colorHex}>█`;
+        } else {
+            copyText += `<alpha=#00>█`;
+        }
+        if ((index + 1) % 10 === 0) { /* Adjusted for 10 columns */
+            copyText += '<br>';
+        }
+    });
+
+    copyText += '</color>';
+    copyText += '</line-height>';
+	copyText += '</font>';
+    copyText += '</size>';
+
+    navigator.clipboard.writeText(copyText);
+    alert('Copied to clipboard!');
+}
+
+function componentToHex(c) {
+    const hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+createPixelGrid(); // Call the function initially to generate the grid
+</script>
+</body>
+</html>
