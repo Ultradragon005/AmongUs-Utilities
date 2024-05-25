@@ -311,7 +311,7 @@
             const again = /<span id="docs-internal-guid-[0-9a-fA-F-]+">/g;
             let outputString = html.replace(regex, '').replace(spans, '').replace(final1, '').replace(/<\/span>/, '')
                 .replace(spanRegex, '').replace(again, '').replace(/<span><br>/g, '').replace(/<\/span>/, '')
-                .replace(/&nbsp;/g, '');
+                .replace(/&nbsp;/g, '').replace(/(<br\s*\/?>\s*)+/gi, '<br>');
 
             /*for (let i = 0; i < 100; i++) {
                 outputString = outputString.replace(/<\/span>/, '');
@@ -343,7 +343,7 @@
             }
 
             // Apply formatting transformations to the editor content
-            editorContent = editorContent.replace(/<div>/g, '<br>').replace(/<\/div>/g, '').replace(/\n/g, '<br>');
+            editorContent = editorContent.replace(/<div>/g, '<br>').replace(/<\/div>/g, '').replace(/\n/g, '<br>/\u202B');
             editorContent = editorContent.replace(/<span style="font-size:([^;]+); color:([^;]+);?">/g, (match, size, color) => {
                 return `<size=${size.trim()}><color=${convertToHex(color)}>`;
             }).replace(/<span style="font-size:([^;]+);?">/g, (match, size) => {
