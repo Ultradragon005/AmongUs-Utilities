@@ -101,7 +101,7 @@ function copyAsHtml() {
     const pixels = document.querySelectorAll('#pixelGrid span');
     let copyText = `<size=${currentSize}%>`;
 	copyText += '<font="VCR SDF">'; // Deletes outlines
-    copyText += '<line-height=85%>';
+    copyText += '<line-height=72%>';
 
     pixels.forEach((pixel, index) => {
         const rgb = pixel.style.backgroundColor.match(/\d+/g).map(Number);
