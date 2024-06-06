@@ -311,7 +311,8 @@
             const again = /<span id="docs-internal-guid-[0-9a-fA-F-]+">/g;
             let outputString = html.replace(regex, '').replace(spans, '').replace(final1, '').replace(/<\/span>/, '')
                 .replace(spanRegex, '').replace(again, '').replace(/<span><br>/g, '').replace(/<\/span>/, '')
-                .replace(/&nbsp;/g, '').replace(/(<br\s*\/?>\s*)+/gi, '<br>');
+                .replace(/&nbsp;/g, '').replace(/(<br\s*\/?>\s*)+/gi, '<br>')
+                .replace(/\u200C/g, '');
 
             /*for (let i = 0; i < 100; i++) {
                 outputString = outputString.replace(/<\/span>/, '');
